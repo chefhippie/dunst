@@ -25,5 +25,5 @@ default["dunst"]["packages"] = %w(
 default["dunst"]["zypper"]["enabled"] = true
 default["dunst"]["zypper"]["alias"] = "x11-windowmanagers"
 default["dunst"]["zypper"]["title"] = "X11 Windowmanagers"
-default["dunst"]["zypper"]["repo"] = "http://download.opensuse.org/repositories/X11:/windowmanagers/openSUSE_#{node["platform_version"]}/"
+default["dunst"]["zypper"]["repo"] = "http://download.opensuse.org/repositories/X11:/windowmanagers/openSUSE_#{node["platform_version"].to_i.to_s == node["platform_version"] ? "Tumbleweed" : node["platform_version"]}/"
 default["dunst"]["zypper"]["key"] = "#{node["dunst"]["zypper"]["repo"]}repodata/repomd.xml.key"
