@@ -22,8 +22,22 @@ default["dunst"]["packages"] = %w(
   libnotify-tools
 )
 
-default["dunst"]["zypper"]["enabled"] = true
-default["dunst"]["zypper"]["alias"] = "x11-windowmanagers"
-default["dunst"]["zypper"]["title"] = "X11 Windowmanagers"
-default["dunst"]["zypper"]["repo"] = "http://download.opensuse.org/repositories/X11:/windowmanagers/openSUSE_#{node["platform_version"].to_i.to_s == node["platform_version"] ? "Tumbleweed" : node["platform_version"]}/"
-default["dunst"]["zypper"]["key"] = "#{node["dunst"]["zypper"]["repo"]}repodata/repomd.xml.key"
+case node["platform_family"]
+when "suse"
+  repo = case node["platform_version"]
+  when /\A13\.\d+\z/
+    "openSUSE_#{node["platform_version"]}"
+  when /\A42\.\d+\z/
+    "openSUSE_Leap_#{node["platform_version"]}"
+  when /\A\d{8}\z/
+    "openSUSE_Tumbleweed"
+  else
+    raise "Unsupported SUSE version"
+  end
+
+  default["dunst"]["zypper"]["enabled"] = true
+  default["dunst"]["zypper"]["alias"] = "x11-windowmanagers"
+  default["dunst"]["zypper"]["title"] = "X11 Windowmanagers"
+  default["dunst"]["zypper"]["repo"] = "http://download.opensuse.org/repositories/X11:/windowmanagers/#{repo}/"
+  default["dunst"]["zypper"]["key"] = "#{node["dunst"]["zypper"]["repo"]}repodata/repomd.xml.key"
+end
